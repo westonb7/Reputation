@@ -1,0 +1,24 @@
+# Main Flow
+
+house main
+
+	framer setup be active
+		frame startup
+			print Starting server
+			bid start server
+			print Starting processor
+			bid start processor
+
+	init main.server.test to False
+    init main.server.preload to True
+
+	framer server be inactive via .main.server
+		frame server
+			do valet server open at enter
+			do valet server service
+			do valet server close at exit
+
+	framer processor be inactive via .main.processor at 1.0
+		frame processor
+			do reputation process reputation
+	
