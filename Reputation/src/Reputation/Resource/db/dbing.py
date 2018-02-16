@@ -20,13 +20,14 @@ console = getConsole()
 gDbDirPath = None
 gDbEnv = None
 
+
 class DatabaseError(Exception):
     """
     Database related errors
     """
 
-def repDbSetup(baseDirPath = None):
 
+def repDbSetup(baseDirPath=None):
     global gDbEnv, gDbDirPath
 
     if not baseDirPath:
@@ -58,9 +59,6 @@ def repDbSetup(baseDirPath = None):
 
     return gDbEnv
 
-    #global testDb
-    #testDb = lmdb.open("./testDbDir", max_dbs=MAX_DB_COUNT)
-    #testTxn = testDb.begin()
 
 def testDbSetup():
     baseDirPath = setupTmpBaseDir()
@@ -68,8 +66,8 @@ def testDbSetup():
     os.makedirs(baseDirPath)
     return setupDbEnv(baseDirPath=baseDirPath)
 
-def repPutTxn(key, ser, env=None, dbName="raw"):
 
+def repPutTxn(key, ser, env=None, dbName="raw"):
     global gDbEnv
 
     if env is None:
@@ -89,7 +87,6 @@ def repPutTxn(key, ser, env=None, dbName="raw"):
 
 
 def repGetTxn(key, env=None, dbName="raw"):
-
     global gDbEnv
 
     if env is None:
@@ -111,6 +108,7 @@ def repGetTxn(key, env=None, dbName="raw"):
             raise DatabaseError("Resource failed desereialization. {}".format(exception))
 
     return dat
+
 
 def repGetEntries(dbName='raw', env=None):
     global gDbEnv
@@ -169,7 +167,6 @@ def repGetEntryKeys(dbName='raw', env=None):
     return entries
 
 
-
 def repDeleteEntry(key, dbName='unprocessed', env=None):
     global gDbEnv
 
@@ -186,7 +183,6 @@ def repDeleteEntry(key, dbName='unprocessed', env=None):
             raise DatabaseError("Entry could not be deleted")
 
     return entry
-
 
 
 def repDeleteEntries(dbName='unprocessed', env=None):
@@ -207,4 +203,3 @@ def repDeleteEntries(dbName='unprocessed', env=None):
             success = True
 
     return success
-

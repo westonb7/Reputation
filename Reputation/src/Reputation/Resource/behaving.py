@@ -9,7 +9,6 @@ from ioflo.aid.odicting import odict
 from ioflo.base import doify
 from .db import dbing
 
-
 import datetime
 
 try:
