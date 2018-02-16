@@ -20,70 +20,78 @@ try:
 except ImportError:
     import json
 
+
+##########
+## This script is written to be run from the command line like this:
+## python3 helpTests.py
+##########
+
+## Testing for the getAll() function from helping.py
+
 def testGetAll():
     entries = []
     result = getAll("foo", entries)
     assert result is False
 
     entries = [{
-      "reputer": "testName",
-      "reputee": "foo",
-      "repute":
+        "reputer": "testName",
+        "reputee": "foo",
+        "repute":
+        {
+            "rid" : "xyz123451",
+            "feature": "reach",
+            "value": 4
+        }
+      },
       {
-        "rid" : "xyz123451",
-        "feature": "reach",
-        "value": 4
-      }
-    },
-    {
-      "reputer": "testName",
-      "reputee": "foo",
-      "repute":
+        "reputer": "testName",
+        "reputee": "foo",
+        "repute":
+        {
+            "rid": "xyz123452",
+            "feature": "reach",
+            "value": 5
+        }
+      },
       {
-        "rid": "xyz123452",
-        "feature": "reach",
-        "value": 5
-      }
-    },
-    {
-      "reputer": "testName",
-      "reputee": "foo",
-      "repute":
+        "reputer": "testName",
+        "reputee": "foo",
+        "repute":
+        {
+            "rid": "xyz123453",
+            "feature": "reach",
+            "value": 6
+        }
+      },
       {
-        "rid": "xyz123453",
-        "feature": "reach",
-        "value": 6
-      }
-    },
-    {
+        "reputer": "testName",
+        "reputee": "foo",
+        "repute":
+          {
+              "rid": "xyz123454",
+              "feature": "clarity",
+              "value": 7
+          }
+      },
+      {
       "reputer": "testName",
       "reputee": "foo",
       "repute":
         {
-          "rid": "xyz123454",
-          "feature": "clarity",
-          "value": 7
+            "rid": "xyz123455",
+            "feature": "clarity",
+            "value": 8
         }
-    },
-    {
-    "reputer": "testName",
-    "reputee": "foo",
-    "repute":
+      },
       {
-        "rid": "xyz123455",
-        "feature": "clarity",
-        "value": 8
-      }
-    },
-    {
-    "reputer": "testName",
-    "reputee": "foo",
-    "repute":
-      {
-        "rid": "xyz123456",
-        "feature": "clarity",
-        "value": 9
-      }
+      "reputer": "testName",
+      "reputee": "foo",
+      "repute":
+        {
+            "rid": "xyz123456",
+            "feature": "clarity",
+            "value": 9
+        }
     }
     ]
 
@@ -99,7 +107,7 @@ def testGetAll():
     print ("getAll() functioning properly.")
 
 def runHelpTests():
-  testGetAll()
+    testGetAll()
 
 runHelpTests()
 
