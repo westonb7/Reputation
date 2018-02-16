@@ -21,23 +21,6 @@ except ImportError:
 console = getConsole()
 
 
-def setupTmpBaseDir(baseDirPath=""):
-    if not baseDirPath:
-        baseDirPath = tempfile.mkdtemp(prefix="reputation", suffix="test", dir="/tmp")
-
-    baseDirPath = os.path.abspath(os.path.expanduser(baseDirPath))
-    return baseDirPath
-
-
-def cleanupTmpBaseDir(baseDirPath):
-    if os.path.exists(baseDirPath):
-        while baseDirPath.startswith("/tmp/reputation"):
-            if baseDirPath.endswith("test"):
-                shutil.rmtree(baseDirPath)
-                break
-            baseDirPath = os.path.dirname(baseDirPath)
-
-
 def cleanupBaseDir(baseDirPath):
     if os.path.exists(baseDirPath):
         shutil.rmtree(baseDirPath)

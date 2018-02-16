@@ -7,10 +7,9 @@ from os import path
 sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
 from pytest import approx
+from src.Reputation.Resource.helping import getAll
 from src.Reputation.Resource.db import dbing
-from src.Reputation.Resource.helping import (setupTmpBaseDir, cleanupTmpBaseDir, getAll)
 from src.Reputation.Resource import priming
-
 from src.Reputation.Resource import calculations as cal
 
 import pytest

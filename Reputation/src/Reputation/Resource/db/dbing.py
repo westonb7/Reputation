@@ -1,11 +1,17 @@
 import falcon
 import os
+import sys
 import enum
 import datetime
 import lmdb
 import libnacl
+import shutil
+import tempfile
 
 from ioflo.aid import getConsole
+from os import path
+
+sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
 
 try:
     import simplejson as json
@@ -203,3 +209,19 @@ def repDeleteEntries(dbName='unprocessed', env=None):
             success = True
 
     return success
+
+def setupTmpBaseDir(baseDirPath=""):
+    if not baseDirPath:
+        baseDirPath = tempfile.mkdtemp(prefix="reputation", suffix="test", dir="/tmp")
+
+    baseDirPath = os.path.abspath(os.path.expanduser(baseDirPath))
+    return baseDirPath
+
+
+def cleanupTmpBaseDir(baseDirPath):
+    if os.path.exists(baseDirPath):
+        while baseDirPath.startswith("/tmp/reputation"):
+            if baseDirPath.endswith("test"):
+                shutil.rmtree(baseDirPath)
+                break
+            baseDirPath = os.path.dirname(baseDirPath)
