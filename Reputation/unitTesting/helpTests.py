@@ -21,12 +21,13 @@ except ImportError:
     import json
 
 
-##########
-## This script is written to be run from the command line like this:
-## python3 helpTests.py
-##########
+"""
+This script is written to be run from the command line like this:
+python3 helpTests.py
+"""
 
 ## Testing for the getAll() function from helping.py
+
 
 def testGetAll():
     entries = []
@@ -105,6 +106,7 @@ def testGetAll():
     assert result[5] == (0)
 
     print ("getAll() functioning properly.")
+
 
 def runHelpTests():
     testGetAll()
