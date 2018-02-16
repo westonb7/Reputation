@@ -1,12 +1,18 @@
 from __future__ import generator_stop
 
-from pytest import approx
-from reputation.db import dbing
-from reputation.help.helping import (setupTmpBaseDir, cleanupTmpBaseDir,
-                                     getAll, getClarity, getReach, getClout)
-from reputation.prime import priming
-
+import sys
 import os
+
+from os import path
+sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
+
+from pytest import approx
+from src.Reputation.Resource.db import dbing
+from src.Reputation.Resource.helping import (setupTmpBaseDir, cleanupTmpBaseDir, getAll)
+from src.Reputation.Resource import priming
+
+from src.Reputation.Resource import calculations as cal
+
 import pytest
 
 try:
@@ -14,11 +20,7 @@ try:
 except ImportError:
     import json
 
-# ================================================== #
-#                     FUNCTIONS                      #
-# ================================================== #
-
-def test_getAll():
+def testGetAll():
     entries = []
     result = getAll("foo", entries)
     assert result is False
@@ -86,10 +88,18 @@ def test_getAll():
     ]
 
     result = getAll("foo", entries)
-    assert result[0] == (0.5)
+
+    assert result[0] == (0.03125)
     assert result[1] == (0)
     assert result[2] == (5.0)
     assert result[3] == (0.125)
     assert result[4] == (8.0)
     assert result[5] == (0)
+
+    print ("getAll() functioning properly.")
+
+def runHelpTests():
+  testGetAll()
+
+runHelpTests()
 

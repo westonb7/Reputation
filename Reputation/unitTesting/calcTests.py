@@ -1,12 +1,13 @@
 import sys
 import os
 import falcon
-#import myFalconApp
-
 
 from math import ceil
 from collections import deque
-from ..src.Reputation.Resource import calculations as cal
+from os import path
+
+sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
+from src.Reputation.Resource import calculations as cal
 
 
 def sFunctionTest():

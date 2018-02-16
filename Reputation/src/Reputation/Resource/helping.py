@@ -60,11 +60,10 @@ def getAll(reputee, entries):
     reach_s = find_score(reach_list)
     reach_c = find_confidence(reach_list, 0)
     clarity_s = find_score(clarity_list)
-    clarity_c = find_confidence(clarity_list, 0)
+    clarity_c = find_confidence(clarity_list, 1)
     clout_s = find_clout_score(reach_s, reach_c, clarity_s, clarity_c)
     clout_c = find_clout_confidence(reach_c, clarity_c)
 
     allList = [clout_s, clout_c, reach_s, reach_c, clarity_s, clarity_c]
 
-    #return [clout_s, clout_c, reach_s, reach_c, clarity_s, clarity_c]
     return allList
