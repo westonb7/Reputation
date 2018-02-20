@@ -14,7 +14,7 @@ resource = Resource()
 api.add_route('/Resource', resource)
 
 # To run the app use this command on the terminal command line:
-# python3 app.py -f ./flo/main.flo -v concise
+# python3 app.py -f ./flo/main.flo -v concise 
 
 def mainRun():
     #from reputation import __version__
