@@ -116,18 +116,3 @@ def loadResource(app, store):
 ## example of reputee_calculated
 #{'foo': {'reputee': 'foo', 'clout': {'score': 0.16499999999999998, 'confidence': 0.125}, 'reach': {'score': 5.5, 'confidence': 0.5}, 'clarity': {'score': 4.4, 'confidence': 0.125}}}
 
-"""
-        if rid not in reputee_rids:
-            if reputee in reputee_scores:
-                if feature in reputee_scores[reputee]:
-                    reputee_scores[reputee][feature].append(value)
-                elif feature == "Reach" or feature == "Clarity":
-                    reputee_scores[reputee][feature] = [value]
-            else:
-                reputee_d = {feature : [value]}
-                reputee_scores[reputee] = reputee_d
-            reputee_rids[rid] = reputee 
-        else:
-            doc_jsn = {"message":"rid must be unique"}
-"""
-
