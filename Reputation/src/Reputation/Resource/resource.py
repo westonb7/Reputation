@@ -9,13 +9,11 @@ try:
 except ImportError:
     import json
 
-## I'll change all the underscore functions and variables to camelcase eventually
-
-## Declare dictionaries
-
+"""
 reputee_scores = {}
 reputee_rids = {}
 reputee_calculated = {}
+"""
 
 RESOURCE_BASE_PATH = "/resource"
 
@@ -84,20 +82,6 @@ class Resource(object):
         resp.status = falcon.HTTP_201
         resp.body = json.dumps({'Message': 'entry successfully created.'})
 
-
-        if rid not in reputee_rids:
-            if reputee in reputee_scores:
-                if feature in reputee_scores[reputee]:
-                    reputee_scores[reputee][feature].append(value)
-                elif feature == "Reach" or feature == "Clarity":
-                    reputee_scores[reputee][feature] = [value]
-            else:
-                reputee_d = {feature : [value]}
-                reputee_scores[reputee] = reputee_d
-            reputee_rids[rid] = reputee 
-        else:
-            doc_jsn = {"message":"rid must be unique"}
-
         #reputee_calculated[reputee] = calculateScores(reputee_scores, reputee)
 
         resp.body = json.dumps(doc_jsn, ensure_ascii=False)
@@ -132,4 +116,18 @@ def loadResource(app, store):
 ## example of reputee_calculated
 #{'foo': {'reputee': 'foo', 'clout': {'score': 0.16499999999999998, 'confidence': 0.125}, 'reach': {'score': 5.5, 'confidence': 0.5}, 'clarity': {'score': 4.4, 'confidence': 0.125}}}
 
+"""
+        if rid not in reputee_rids:
+            if reputee in reputee_scores:
+                if feature in reputee_scores[reputee]:
+                    reputee_scores[reputee][feature].append(value)
+                elif feature == "Reach" or feature == "Clarity":
+                    reputee_scores[reputee][feature] = [value]
+            else:
+                reputee_d = {feature : [value]}
+                reputee_scores[reputee] = reputee_d
+            reputee_rids[rid] = reputee 
+        else:
+            doc_jsn = {"message":"rid must be unique"}
+"""
 

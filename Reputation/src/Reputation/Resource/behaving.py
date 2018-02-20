@@ -34,22 +34,25 @@ def reputationProcessReputation(self, **kwa):
             console.terse("Error processing reputation. {}".format(exception))
 
         if len(entries) > 0:
+            ridList = []
             for entry in entries:
-                result = getAll(entry['reputee'], dbing.repGetEntries())
-                if result != False:
-                    ser = json.dumps({"reputee": entry['reputee'], "clout": {
-                        "score": result[0],
-                        "confidence": result[1]}, "reach": {
-                        "score": result[2],
-                        "confidence": result[3]}, "clarity": {
-                        "score": result[4],
-                        "confidence": result[5]}})
-                    try:
-                        success = dbing.repPutTxn(entry['reputee'], ser, dbName='reputation')
-                    except dbing.DatabaseError as exception:
-                        console.terse("Error processing reputation. {}".format(exception))
-                    if not success:
-                        console.terse("Error processing reputation.")
+                if entry['repute']['rid'] not in ridList:   #Ignore reputes with duplicate rids
+                    ridList.append(entry['repute']['rid'])
+                    result = getAll(entry['reputee'], dbing.repGetEntries())
+                    if result != False:
+                        ser = json.dumps({"reputee": entry['reputee'], "clout": {
+                            "score": result[0],
+                            "confidence": result[1]}, "reach": {
+                            "score": result[2],
+                            "confidence": result[3]}, "clarity": {
+                            "score": result[4],
+                            "confidence": result[5]}})
+                        try:
+                            success = dbing.repPutTxn(entry['reputee'], ser, dbName='reputation')
+                        except dbing.DatabaseError as exception:
+                            console.terse("Error processing reputation. {}".format(exception))
+                        if not success:
+                            console.terse("Error processing reputation.")
 
             success = dbing.repDeleteEntries()
             console.terse("Unprocessed database cleared: {}".format(str(success)))
