@@ -16,8 +16,9 @@ try:
 except ImportError:
     import json
 
-console = getConsole()
+# This file defines the behavior that processes the data from the 'unprocessed' database
 
+console = getConsole()
 
 @doify('ReputationProcessReputation', ioinits=odict(test=""))
 def reputationProcessReputation(self, **kwa):
@@ -28,11 +29,13 @@ def reputationProcessReputation(self, **kwa):
 
         console.verbose("Updating reputation at '{}'\n".format(date))
 
+        # Get the data from the 'unprocessed' database
         try:
             entries = dbing.repGetEntries(dbName='unprocessed')
         except dbing.DatabaseError as exception:
             console.terse("Error processing reputation. {}".format(exception))
 
+        #Process the data and move the calculated scores into the 'reputation' database
         if len(entries) > 0:
             ridList = []
             for entry in entries:

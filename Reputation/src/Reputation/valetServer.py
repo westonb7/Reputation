@@ -15,6 +15,8 @@ from Resource import priming
 
 console = getConsole()
 
+# This file defines behaviors run by the main.flo script which control the server
+
 @doify('ValetServerOpen', ioinits=odict(
                                         valet="",
                                         port=odict(ival=8000),
@@ -64,6 +66,7 @@ def valetServerOpen(self, buffer=False, **kwa):
     console.concise("Opened server '{0}' at '{1}'\n".format(
                             self.valet.name,
                             self.valet.value.servant.ha,))
+
 
 @doify('ValetServerService',ioinits=odict(valet=""))
 def valetServerService(self, **kwa):

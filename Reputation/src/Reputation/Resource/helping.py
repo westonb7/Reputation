@@ -25,28 +25,29 @@ def cleanupBaseDir(baseDirPath):
     if os.path.exists(baseDirPath):
         shutil.rmtree(baseDirPath)
 
+# This is the function used to take and calculate the scores for the reputes
 
 def getAll(reputee, entries):
-    reach_list = []
-    clarity_list = []
+    reachList = []
+    clarityList = []
 
     for entry in entries:
         if entry['reputee'] == reputee:
             if entry['repute']['feature'] == "reach":
-                reach_list.append(entry['repute']['value'])
+                reachList.append(entry['repute']['value'])
             elif entry['repute']['feature'] == "clarity":
-                clarity_list.append(entry['repute']['value'])
+                clarityList.append(entry['repute']['value'])
 
-    if len(reach_list) == 0 and len(clarity_list) == 0:
+    if len(reachList) == 0 and len(clarityList) == 0:
         return False
 
-    reach_s = findScore(reach_list)
-    reach_c = findConfidence(reach_list, 0)
-    clarity_s = findScore(clarity_list)
-    clarity_c = findConfidence(clarity_list, 1)
-    clout_s = findCloutScore(reach_s, reach_c, clarity_s, clarity_c)
-    clout_c = findCloutConfidence(reach_c, clarity_c)
+    reachScore = findScore(reachList)
+    reachConf = findConfidence(reachList, 0)
+    clarityScore = findScore(clarityList)
+    clarityConf = findConfidence(clarityList, 1)
+    cloutScore = findCloutScore(reachScore, reachConf, clarityScore, clarityConf)
+    cloutConf = findCloutConfidence(reachConf, clarityConf)
 
-    allList = [clout_s, clout_c, reach_s, reach_c, clarity_s, clarity_c]
+    allList = [cloutScore, cloutConf, reachScore, reachConf, clarityScore, clarityConf]
 
     return allList

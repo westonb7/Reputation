@@ -1,4 +1,5 @@
 # Main Flow
+# This script will run the behaviors defined in "behaving.py" and "valetServer.py"
 
 house main
 

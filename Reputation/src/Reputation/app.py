@@ -1,19 +1,20 @@
 import falcon
 import ioflo.app.run
 
-from valetTest import *
+from valetServer import *
 from Resource.resource import Resource
 from Resource import helping
 from Resource import behaving
+
+# This is the "main" file for this project
 
 api = application = falcon.API()
 
 resource = Resource()
 api.add_route('/Resource', resource)
 
-## To run the app use this command on the terminal command line:
-## python3 app.py -f ./flo/main.flo -v concise
-
+# To run the app use this command on the terminal command line:
+# python3 app.py -f ./flo/main.flo -v concise
 
 def mainRun():
     #from reputation import __version__

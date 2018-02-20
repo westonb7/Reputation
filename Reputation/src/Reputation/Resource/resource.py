@@ -9,9 +9,9 @@ try:
 except ImportError:
     import json
 
-RESOURCE_BASE_PATH = "/resource"
+# This file contains the "resource" object that is used to handle GET and POST requests
 
-# This object will be used to handle the GET and POST requests
+RESOURCE_BASE_PATH = "/resource"
 
 class Resource(object):
     # Sample GET request: 
@@ -25,13 +25,12 @@ class Resource(object):
 
     def on_get(self, req, resp):
 
-        rep_name = req.get_param('name')
+        reputeeName = req.get_param('name')
 
-        if rep_name == None:
+        if reputeeName == None:
             raise falcon.HTTPError(falcon.HTTP_400, 'Error', 'A valid query is required.')
 
-
-        result = dbing.repGetTxn(rep_name, dbn='reputation')
+        result = dbing.repGetTxn(reputeeName, dbn='reputation')
         if result == false:
             raise falcon.HTTPError(falcon.HTTP_400, 'Error', 'Reputee could not be found.')
         else:
@@ -48,40 +47,44 @@ class Resource(object):
         doc_jsn = {"message":"POST recieved"}
 
         try:
-            stream_data = req.stream.read()
-            if not stream_data:
+            streamData = req.stream.read()
+            if not streamData:
                 raise falcon.HTTPError(falcon.HTTP_400, 'Error', 'Invalid JSON document')
         except Exception:
             raise falcon.HTTPError(falcon.HTTP_400, 'Error', 'Invalid JSON document')
 
         try:
-            stream_data = json.loads(stream_data)
+            streamData = json.loads(streamData)
         except ValueError:
             raise falcon.HTTPError(falcon.HTTP_422, 'Error', 'Could not decode the request body ')
 
-        reputer = stream_data['test']['reputer']
-        reputee = stream_data['test']['reputee']
-        rid = str(stream_data['test']['repute']['rid'])
-        feature = stream_data['test']['repute']['feature']
-        value = int(stream_data['test']['repute']['value'])
+        # If there's a better way to format the POST body, I'd like to change it
+        # Access the data in the POST body, and format it for the databse
+
+        reputer = streamData['test']['reputer']
+        reputee = streamData['test']['reputee']
+        rid = str(streamData['test']['repute']['rid'])
+        feature = streamData['test']['repute']['feature']
+        value = int(streamData['test']['repute']['value'])
 
         key = reputee + '-' + rid
         ser = json.dumps({"reputer": reputer,
                             "reputee": reputee,
                             "repute": {"rid": rid, "feature": feature, "value": value}})
         
-        dbing.repPutTxn(key, ser)
+        # Enter the data into the databse
+
+        dbing.repPutTxn(key, ser)    
         dbing.repPutTxn(reputee, ser, dbName="unprocessed")
         resp.status = falcon.HTTP_201
         resp.body = json.dumps({'Message': 'entry successfully created.'})
-
-        #reputee_calculated[reputee] = calculateScores(reputee_scores, reputee)
 
         resp.body = json.dumps(doc_jsn, ensure_ascii=False)
         resp.status = falcon.HTTP_202
 
         dbing.repPutTxn(reputee, rid, feature, str(value))
 
+# Define a function to load the object
 
 def loadResource(app, store):
 

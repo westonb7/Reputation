@@ -17,19 +17,19 @@ def sFunction(x, a, b):
 
 ## Define a function to calculate score, can be used for either reach or clarity
 
-def findScore(score_list):
+def findScore(scoreList):
     avg = 0
-    total = len(score_list)
+    total = len(scoreList)
     if total <= 0:
         return 0
-    for val in score_list:
+    for val in scoreList:
         avg += val
     return (avg/total)  
 
 ## Define a function to calculate confidence, can be used for reach or clarity
 
-def findConfidence(conf_list, type):
-    total = len(conf_list)
+def findConfidence(confList, type):
+    total = len(confList)
     if type == "reach": ## In case someone attempts to use this function with 'reach'/'clarity' as type
         type = 0
     elif type == "clarity":
@@ -44,41 +44,41 @@ def findConfidence(conf_list, type):
 
 ## Define function to calculate clout score
 
-def findCloutScore(reach_s, reach_c, clarity_s, clarity_c):
-    clout_s = 0.0       ## Declare a float to prevent integer coecion problems
-    clout_s = (((reach_s*reach_c) + (clarity_s*clarity_c)) / 2.0) / 10.0
-    return clout_s
+def findCloutScore(reachScore, reachConf, clarityScore, clarityConf):
+    cloutScore = 0.0       ## Declare a float to prevent integer coecion problems
+    cloutScore = (((reachScore*reachConf) + (clarityScore*clarityConf)) / 2.0) / 10.0
+    return cloutScore
 
 
-def findCloutConfidence(reach_c, clarity_c):
-    return min(reach_c, clarity_c)
+def findCloutConfidence(reachConf, clarityConf):
+    return min(reachConf, clarityConf)
 
 ## Define function to calculate scores and confidences for reach, clarity, and clout
 
-def calculateScores(reputee_scores, reputee):
-    error_message = {
+def calculateScores(reputeeScores, reputee):
+    errorMessage = {
         'message':'Missing reach or clarity data for this reputee'
     }
-    if "Reach" in reputee_scores[reputee]:
-        reach_s = findScore(reputee_scores[reputee]["Reach"])
-        reach_c = findConfidence(reputee_scores[reputee]["Reach"], 0) 
+    if "Reach" in reputeeScores[reputee]:
+        reachScore = findScore(reputeeScores[reputee]["Reach"])
+        reachConf = findConfidence(reputeeScores[reputee]["Reach"], 0) 
     else:
-        return error_message
+        return errorMessage
 
-    if "Clarity" in reputee_scores[reputee]:
-        clarity_s = findScore(reputee_scores[reputee]["Clarity"])
-        clarity_c = findConfidence(reputee_scores[reputee]["Clarity"], 1)
+    if "Clarity" in reputeeScores[reputee]:
+        clarityScore = findScore(reputeeScores[reputee]["Clarity"])
+        clarityConf = findConfidence(reputeeScores[reputee]["Clarity"], 1)
     else:
-        return error_message
+        return errorMessage
 
-    clout_s = findCloutScore(reach_s, reach_c, clarity_s, clarity_c)
-    clout_c = findCloutConfidence(reach_c, clarity_c)
+    cloutScore = findCloutScore(reachScore, reachConf, clarityScore, clarityConf)
+    cloutConf = findCloutConfidence(reachConf, clarityConf)
 
     return_obj = {
         'reputee':reputee,
-        'clout':{ 'score':clout_s, 'confidence':clout_c },
-        'reach':{ 'score':reach_s, 'confidence':reach_c },
-        'clarity':{ 'score':clarity_s, 'confidence':clarity_c }
+        'clout':{ 'score':cloutScore, 'confidence':cloutConf },
+        'reach':{ 'score':reachScore, 'confidence':reachConf },
+        'clarity':{ 'score':clarityScore, 'confidence':clarityConf }
     }
 
     return return_obj

@@ -6,7 +6,7 @@ This project is for a reputation system. This reputation system takes json POST 
 
 This reputation system is run on python3, and requires falcon, ioflo, lmdb, and libnacl to be installed. If you are running on a windows OS, you may require some additional steps or libraries to set up and run this project.
 
-###Prerequisites
+### Prerequisites
 
 As mentioned above, this project requires python3, falcon, ioflo, lmdb, and libnacl to run. If you're using OSX, these can all be installed using homebrew. If any of these are already installed, these steps can be skipped. These can be installed in a few different ways, but for this readme, I'll be using Homebrew to perform the installations.
 
@@ -51,11 +51,11 @@ Httpie isn't necessary for this app to run, but it's handy to have for testing, 
 
 `pip3 install httpie`
 
-###Installing
+### Installing
 
 The project files can be downloaded from GitHub here: `https://github.com/westonb7/Reputation`
 
-##Testing
+## Testing
 
 The testing scripts for this project can be found in the /Reputation/unitTesting/ directory of the project. The tests can be run by navigating to this directory and running them from the command line using `python3` (or just `python` if python3 is the only python installation). Each of the testing scripts can be run individually if you are interested in one specific aspect of the code, or all of the tests can be run together all at once using the testAll.py script.
 
@@ -81,7 +81,7 @@ Otherwise, the console should print an error message if there's something wrong.
 
 I'll be adding more testing scripts later.
 
-##Running the API
+## Running the API
 
 This project can be run from the command line by navigating to the /Reputation/src/Reputation/ directory, and running the following command:
 
