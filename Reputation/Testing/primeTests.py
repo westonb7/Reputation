@@ -16,8 +16,6 @@ This script is written to be run from the command line like this:
 python3 primeTests.py
 """
 
-## Thanks Brady for letting me take notes from your code
-
 def setupPrimeTest():
     baseDirPath = dbing.setupTmpBaseDir()
     assert baseDirPath.startswith("/tmp/reputation")

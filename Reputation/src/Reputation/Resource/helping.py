@@ -2,6 +2,8 @@ import falcon
 import os
 import shutil
 import tempfile
+import base64
+import libnacl
 from .db import dbing
 
 from collections import defaultdict
@@ -54,3 +56,31 @@ def getAll(reputee, entries):
 
     #print("getAll() success!")
     return allList
+
+
+def verify(sig, msg, vk):
+    """
+    Returns True if signature sig of message msg is verified with
+    verification key vk Otherwise False
+    All of sig, msg, vk are bytes
+    """
+    try:
+        result = libnacl.crypto_sign_open(sig + msg, vk)
+    except Exception as ex:
+        return False
+    return (True if result else False)
+
+
+def keyToKey64u(key):
+    """
+    Convert and return bytes key to unicode base64 url-file safe version
+    """
+    return base64.urlsafe_b64encode(key).decode("utf-8")
+
+
+def key64uToKey(key64u):
+    """
+    Convert and return unicode base64 url-file safe key64u to bytes key
+    """
+    return base64.urlsafe_b64decode(key64u.encode("utf-8"))
+

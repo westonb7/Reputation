@@ -84,7 +84,7 @@ class Resource(object):
         resp.body = json.dumps(doc_jsn, ensure_ascii=False)
         resp.status = falcon.HTTP_202
 
-        dbing.repPutTxn(reputee, rid, feature, str(value))
+        #dbing.repPutTxn(reputee, rid, feature, str(value))
 
 # Define a function to load the object
 
