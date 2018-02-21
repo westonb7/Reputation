@@ -1,3 +1,4 @@
+from __future__ import generator_stop
 import falcon
 import os
 import sys
@@ -26,8 +27,12 @@ console = getConsole()
 gDbDirPath = None
 gDbEnv = None
 
+class RepError(Exception):
+    """
+    Error clasee
+    """
 
-class DatabaseError(Exception):
+class DatabaseError(RepError):
     """
     Database related errors
     """
@@ -70,7 +75,7 @@ def testDbSetup():
     baseDirPath = setupTmpBaseDir()
     baseDirPath = os.path.join(baseDirPath, "db/reputation")
     os.makedirs(baseDirPath)
-    return setupDbEnv(baseDirPath=baseDirPath)
+    return repDbSetup(baseDirPath=baseDirPath)
 
 
 def repPutTxn(key, ser, env=None, dbName="raw"):

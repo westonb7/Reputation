@@ -26,6 +26,18 @@ def findScore(scoreList):
         avg += val
     return (avg/total)  
 
+def runningScore(avg, total):
+    if total <= 0:
+        return 0
+    return (avg/total)
+
+def runningConf(total, type):
+    if type == 0:
+        return sFunction(total, 2.0, 6.0)
+    elif type == 1:
+        return sFunction(total, 4.0, 8.0)
+    return 0
+
 ## Define a function to calculate confidence, can be used for reach or clarity
 
 def findConfidence(confList, type):

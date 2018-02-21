@@ -23,10 +23,11 @@ console = getConsole()
 @doify('ReputationProcessReputation', ioinits=odict(test=""))
 def reputationProcessReputation(self, **kwa):
     if dbing.gDbEnv:
+
         dt = datetime.datetime.now(tz=datetime.timezone.utc)
         stamp = int(dt.timestamp() * 1000000)
         date = timing.iso8601(dt, aware=True)
-
+        
         console.verbose("Updating reputation at '{}'\n".format(date))
 
         # Get the data from the 'unprocessed' database
@@ -38,11 +39,17 @@ def reputationProcessReputation(self, **kwa):
         #Process the data and move the calculated scores into the 'reputation' database
         if len(entries) > 0:
             ridList = []
+            #try to get ridList from db
+            #try:
+                #ridList = dbing.repGetTxn("ridList", dbName="reputation")
+            #if ridList == None:
+                #ridList = []
             for entry in entries:
                 if entry['repute']['rid'] not in ridList:   #Ignore reputes with duplicate rids
                     ridList.append(entry['repute']['rid'])
-                    result = getAll(entry['reputee'], dbing.repGetEntries())
+                    result = getAll(entry['reputee'], dbing.repGetEntries()) 
                     if result != False:
+                        #print("4")
                         ser = json.dumps({"reputee": entry['reputee'], "clout": {
                             "score": result[0],
                             "confidence": result[1]}, "reach": {
@@ -51,6 +58,8 @@ def reputationProcessReputation(self, **kwa):
                             "score": result[4],
                             "confidence": result[5]}})
                         try:
+                            #print("5")
+                            #ridSucess = dbing.repPutTxn("ridList", ridList dbName='reputation')
                             success = dbing.repPutTxn(entry['reputee'], ser, dbName='reputation')
                         except dbing.DatabaseError as exception:
                             console.terse("Error processing reputation. {}".format(exception))

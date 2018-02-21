@@ -15,11 +15,13 @@ house main
 
     framer server be inactive via .main.server
         frame server
+            #print hello from server
             do valet server open at enter
             do valet server service
             do valet server close at exit
 
     framer processor be inactive via .main.processor at 1.0
         frame processor
+            #print hello from processor
             do reputation process reputation
     

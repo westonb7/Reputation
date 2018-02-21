@@ -30,12 +30,14 @@ def cleanupBaseDir(baseDirPath):
 def getAll(reputee, entries):
     reachList = []
     clarityList = []
+    #print(entries)
 
     for entry in entries:
+        #print(entry)
         if entry['reputee'] == reputee:
-            if entry['repute']['feature'] == "reach":
+            if entry['repute']['feature'] == "Reach":
                 reachList.append(entry['repute']['value'])
-            elif entry['repute']['feature'] == "clarity":
+            elif entry['repute']['feature'] == "Clarity":
                 clarityList.append(entry['repute']['value'])
 
     if len(reachList) == 0 and len(clarityList) == 0:
@@ -50,4 +52,5 @@ def getAll(reputee, entries):
 
     allList = [cloutScore, cloutConf, reachScore, reachConf, clarityScore, clarityConf]
 
+    #print("getAll() success!")
     return allList

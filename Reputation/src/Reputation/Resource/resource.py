@@ -23,19 +23,21 @@ class Resource(object):
         self.store = store
 
 
-    def on_get(self, req, resp):
+    def on_get(self, req, resp, reputeeName=None):
 
         reputeeName = req.get_param('name')
 
         if reputeeName == None:
             raise falcon.HTTPError(falcon.HTTP_400, 'Error', 'A valid query is required.')
 
-        result = dbing.repGetTxn(reputeeName, dbn='reputation')
-        if result == false:
+        try:
+            reputeeName = reputeeName.lower()
+            result = dbing.repGetTxn(reputeeName, dbName='reputation')
+        except dbing.DatabaseError:
             raise falcon.HTTPError(falcon.HTTP_400, 'Error', 'Reputee could not be found.')
-        else:
-            resp.body = json.dumps(result)
-            resp.status = falcon.HTTP_200
+ #       else:
+        resp.body = json.dumps(result)
+        resp.status = falcon.HTTP_200
 
 
     def on_post(self, req, resp):   
@@ -90,6 +92,11 @@ def loadResource(app, store):
 
     resource = Resource(store=store)
     app.add_route('{}'.format(RESOURCE_BASE_PATH), resource)
+
+def create(store):
+    app = falcon.API()
+    loadResource(app, store=store)
+    return app
 
 
 """
