@@ -5,3 +5,4 @@ import falcon
 import calcTests
 import helpTests
 import primeTests
+import resourceTests

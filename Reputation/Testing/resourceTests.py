@@ -102,13 +102,12 @@ def testPost(client):
           }
         }
     })
-    print(ser)
-    result = client.simulate_post('/reputation/', body=ser)
-    print(result.content)
-    assert result.content == b'{"Message":"entry successfully created."}'
-    assert result.status == falcon.HTTP_201
+    result = client.simulate_post('/resource/', body=ser)
+    #print(result.content)
+    assert result.content == b'{"message": "POST recieved"}'
+    assert result.status == falcon.HTTP_202
 
-    helping.cleanupTmpBaseDir(dbing.gDbDirPath)
+    helping.cleanupBaseDir(dbing.gDbDirPath)
 
     print("on_post() functioning properly")
 
@@ -116,7 +115,7 @@ def testPost(client):
 
 def runResourceTests():
     clientName = client()
-    #testOnGet(clientName)
+    testOnGet(clientName)
     testPost(clientName)
 
     return True

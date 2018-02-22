@@ -39,7 +39,7 @@ def testGetAll():
         "repute":
         {
             "rid" : "xyz123451",
-            "feature": "reach",
+            "feature": "Reach",
             "value": 4
         }
       },
@@ -49,7 +49,7 @@ def testGetAll():
         "repute":
         {
             "rid": "xyz123452",
-            "feature": "reach",
+            "feature": "Reach",
             "value": 5
         }
       },
@@ -59,7 +59,7 @@ def testGetAll():
         "repute":
         {
             "rid": "xyz123453",
-            "feature": "reach",
+            "feature": "Reach",
             "value": 6
         }
       },
@@ -69,7 +69,7 @@ def testGetAll():
         "repute":
           {
               "rid": "xyz123454",
-              "feature": "clarity",
+              "feature": "Clarity",
               "value": 7
           }
       },
@@ -79,7 +79,7 @@ def testGetAll():
       "repute":
         {
             "rid": "xyz123455",
-            "feature": "clarity",
+            "feature": "Clarity",
             "value": 8
         }
       },
@@ -89,7 +89,7 @@ def testGetAll():
       "repute":
         {
             "rid": "xyz123456",
-            "feature": "clarity",
+            "feature": "Clarity",
             "value": 9
         }
     }

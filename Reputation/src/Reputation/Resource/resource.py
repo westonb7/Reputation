@@ -63,8 +63,6 @@ class Resource(object):
         # If there's a better way to format the POST body, I'd like to change it
         # Access the data in the POST body, and format it for the databse
 
-        print(streamData)
-
         try:
             reputer = streamData['test']['reputer']
             reputee = streamData['test']['reputee']
