@@ -45,8 +45,6 @@ def testOnGet(client):
     assert result.status == falcon.HTTP_400
 
     result = client.simulate_get('/resource/', query_string="name=foo")
-#    print(result.json)    
-
     assert result.json == docB
     assert result.status == falcon.HTTP_400
 
@@ -60,57 +58,73 @@ def testOnGet(client):
     dbing.repPutTxn("foo", ser, dbName="reputation")
 
     result = client.simulate_get('/resource/', query_string="name=foo")
-
     assert result.json == docC
     assert result.status == falcon.HTTP_200
 
     helping.cleanupBaseDir(dbing.gDbDirPath)
 
-    return True
+    print("on_get() functioning properly")
 
 def testPost(client):
     priming.setupTest()
-    dbing.setupTestDbEnv()
+    dbing.testDbSetup()
 
-    response = app.simulate_post('/reputation/foo')
-    assert response.content == b'{"title":"Error","description":"Malformed URI."}'
-    assert response.status == falcon.HTTP_400
+    result = client.simulate_post('/resource/')
+    #print(result.content)
+    assert result.content == b'{"title": "Error", "description": "Invalid JSON document"}'
+    assert result.status == falcon.HTTP_400
 
-    response = app.simulate_post('/reputation/')
-    assert response.content == b'{"title":"Error","description":"A valid JSON document is required."}'
-    assert response.status == falcon.HTTP_400
+    result = client.simulate_post('/resource/', query_string="name=foo")
+    #print(result.content)
+    assert result.content == b'{"title": "Error", "description": "Invalid JSON document"}'
+    assert result.status == falcon.HTTP_400
 
-    response = app.simulate_post('/reputation/', body=b'Testing ... 1 ... 2 ... 3')
-    assert response.content == b'{"title":"Error","description":"Could not decode the request body. The JSON was malformed or not encoded as UTF-8."}'
-    assert response.status == falcon.HTTP_422
+    result = client.simulate_post('/resource/', body=b'Testing ... 1 ... 2 ... 3')
+    #print(result.content)
+    assert result.content == b'{"title": "Error", "description": "Could not decode the request body"}'
+    assert result.status == falcon.HTTP_422
 
     ser = json.dumps({"test":"test"})
-    response = app.simulate_post('/reputation/', body=ser)
-    assert response.content == b'{"title":"Error","description":"The JSON was formatted incorrectly."}'
-    assert response.status == falcon.HTTP_400
+    #print(result.content)
+    result = client.simulate_post('/resource/', body=ser)
+    assert result.content == b'{"title": "Error", "description": "The JSON was formatted incorrectly"}'
+    assert result.status == falcon.HTTP_400
 
-    ser = json.dumps({
-    "reputer": "foo",
-    "reputee": "bar",
-    "repute":
-      {
-        "rid": "dda6555f-21c8-45ff-9633-f9b5cdc59f45",
-        "feature": "clarity",
-        "value": 5
-      }
+    ser = json.dumps({ "test":
+        {
+        "reputer": "foo",
+        "reputee": "bar",
+        "repute":
+          {
+            "rid": "xyz123409876768",
+            "feature": "clarity",
+            "value": 5
+          }
+        }
     })
-    response = app.simulate_post('/reputation/', body=ser)
-    assert response.content == b'{"Message":"entry successfully created."}'
-    assert response.status == falcon.HTTP_201
+    print(ser)
+    result = client.simulate_post('/reputation/', body=ser)
+    print(result.content)
+    assert result.content == b'{"Message":"entry successfully created."}'
+    assert result.status == falcon.HTTP_201
 
     helping.cleanupTmpBaseDir(dbing.gDbDirPath)
+
+    print("on_post() functioning properly")
+
 
 
 def runResourceTests():
     clientName = client()
-    testOnGet(clientName)
-    #testOnPost(clientName)
+    #testOnGet(clientName)
+    testPost(clientName)
 
     return True
 
 runResourceTests()
+
+
+
+
+# http --json POST localhost:8000/resource test:="{"reputer":"name", "reputee":"foo", "repute":{"rid":"xyz1527577345774", "feature":"Reach", "value":"5"}}"
+# http --json POST localhost:8000/resource reputer=name reputee=foo repute:="rid"="xyz1527577345774", feature=Reach, value=5}"

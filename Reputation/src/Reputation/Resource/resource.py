@@ -58,31 +58,37 @@ class Resource(object):
         try:
             streamData = json.loads(streamData)
         except ValueError:
-            raise falcon.HTTPError(falcon.HTTP_422, 'Error', 'Could not decode the request body ')
+            raise falcon.HTTPError(falcon.HTTP_422, 'Error', 'Could not decode the request body')
 
         # If there's a better way to format the POST body, I'd like to change it
         # Access the data in the POST body, and format it for the databse
 
-        reputer = streamData['test']['reputer']
-        reputee = streamData['test']['reputee']
-        rid = str(streamData['test']['repute']['rid'])
-        feature = streamData['test']['repute']['feature']
-        value = int(streamData['test']['repute']['value'])
+        print(streamData)
 
-        key = reputee + '-' + rid
-        ser = json.dumps({"reputer": reputer,
+        try:
+            reputer = streamData['test']['reputer']
+            reputee = streamData['test']['reputee']
+            rid = str(streamData['test']['repute']['rid'])
+            feature = streamData['test']['repute']['feature']
+            value = int(streamData['test']['repute']['value'])
+
+            key = reputee + '-' + rid
+            ser = json.dumps({"reputer": reputer,
                             "reputee": reputee,
                             "repute": {"rid": rid, "feature": feature, "value": value}})
         
-        # Enter the data into the databse
+            # Enter the data into the databse
 
-        dbing.repPutTxn(key, ser)    
-        dbing.repPutTxn(reputee, ser, dbName="unprocessed")
-        resp.status = falcon.HTTP_201
-        resp.body = json.dumps({'Message': 'entry successfully created.'})
+            dbing.repPutTxn(key, ser)    
+            dbing.repPutTxn(reputee, ser, dbName="unprocessed")
+            resp.status = falcon.HTTP_201
+            resp.body = json.dumps({'Message': 'entry successfully created.'})
 
-        resp.body = json.dumps(doc_jsn, ensure_ascii=False)
-        resp.status = falcon.HTTP_202
+            resp.body = json.dumps(doc_jsn, ensure_ascii=False)
+            resp.status = falcon.HTTP_202
+
+        except Exception:
+            raise falcon.HTTPError(falcon.HTTP_400, 'Error', 'The JSON was formatted incorrectly')
 
         #dbing.repPutTxn(reputee, rid, feature, str(value))
 
