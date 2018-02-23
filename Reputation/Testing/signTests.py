@@ -23,7 +23,7 @@ from src.Reputation.Resource.db import dbing
 
 """
 This script is written to be run from the command line like this:
-python3 resourceTests.py
+python3 signTests.py
 """
 
 store = storing.Store(stamp=0.0)
@@ -39,11 +39,13 @@ def testOnGet(client):
     docB = {'title':'Error', 'description':'Reputee could not be found.'}
     docC = {"reputee": "foo", "clout": {"score": 2.0}, "confidence": 0.5, "reach": {"score": 2.0, "confidence": 1}, "clarity": {"score": 2.0, "confidence": 0.5}}
 
-    result = client.simulate_get('/resource/')
+    result = client.simulate_get('/signResource/')
+    #print(result.content)
     assert result.json == docA
     assert result.status == falcon.HTTP_400
 
-    result = client.simulate_get('/resource/', query_string="name=foo")
+    result = client.simulate_get('/signResource/', query_string="name=789798bazelgeuse")
+    #print(result.content)
     assert result.json == docB
     assert result.status == falcon.HTTP_400
 
@@ -56,70 +58,73 @@ def testOnGet(client):
                     "confidence": 0.5}})
     dbing.repPutTxn("foo", ser, dbName="reputation")
 
-    result = client.simulate_get('/resource/', query_string="name=foo")
+    result = client.simulate_get('/signResource/', query_string="name=foo")
+    #print(result.content)
     assert result.json == docC
     assert result.status == falcon.HTTP_200
 
     helping.cleanupBaseDir(dbing.gDbDirPath)
 
-    print("on_get() functioning properly")
+    print("signed on_get() functioning properly")
 
 def testPost(client):
+    headers = {"Signature": "123;456"}
+    ser = json.dumps({"test":"test"})
+    did, sk = helping.createTestDid()
+
+    bodyA = ser
+    bodyB = b'{"reputer": "foo", "repute": ' \
+            b'{"rid": 1, "feature": "clarity", "value": 1}}'
+    bodyC = b'{"reputer": "foo", "reputee": "' + did.encode('utf-8') + b'"}'
+    bodyD = b'{"reputer": "foo", "reputee": "' + did.encode('utf-8') + b'", "repute": ' \
+            b'{"rid": 1, "feature": "clarity", "value": 5}}'
+
     priming.setupTest()
     dbing.testDbSetup()
 
-    result = client.simulate_post('/resource/')
-    #print(result.content)
-    assert result.content == b'{"title": "Error", "description": "Invalid JSON document"}'
+    result = client.simulate_post('/signResource/')
+    assert result.content == b'{"title": "Error", "description": "Invalid or missing Signature header."}'
     assert result.status == falcon.HTTP_400
 
-    result = client.simulate_post('/resource/', query_string="name=foo")
-    #print(result.content)
-    assert result.content == b'{"title": "Error", "description": "Invalid JSON document"}'
+    headers["Signature"] = 'signer="' + helping.signResource(bodyA, sk) + '"'
+
+    result = client.simulate_post('/signResource/', headers=headers)
+    assert result.content == b'{"title": "Error", "description": "Could not decode the request body."}'
     assert result.status == falcon.HTTP_400
 
-    result = client.simulate_post('/resource/', body=b'Testing ... 1 ... 2 ... 3')
-    #print(result.content)
-    assert result.content == b'{"title": "Error", "description": "Could not decode the request body"}'
-    assert result.status == falcon.HTTP_422
-
-    ser = json.dumps({"test":"test"})
-    #print(result.content)
-    result = client.simulate_post('/resource/', body=ser)
-    assert result.content == b'{"title": "Error", "description": "The JSON was formatted incorrectly"}'
+    result = client.simulate_post("/signResource", headers=headers, body=bodyB)
+    assert result.content == b'{"title": "Error", "description": "Request must contain reputee field."}'
     assert result.status == falcon.HTTP_400
 
-    ser = json.dumps({ "test":
-        {
-        "reputer": "foo",
-        "reputee": "bar",
-        "repute":
-          {
-            "rid": "xyz123409876768",
-            "feature": "clarity",
-            "value": 5
-          }
-        }
-    })
-    result = client.simulate_post('/resource/', body=ser)
-    #print(result.content)
+    result = client.simulate_post("/signResource", headers=headers, body=bodyC)
+    assert result.content == b'{"title": "Error", "description": "Could not validate the request body. Unverifiable signature"}'
+    assert result.status == falcon.HTTP_400
+
+    headers["Signature"] = 'signer="' + helping.signResource(bodyC, sk) + '"'
+
+    result = client.simulate_post("/signResource", headers=headers, body=bodyC)
+    assert result.content == b'{"title": "Error", "description": "Request must contain repute field."}'
+    assert result.status == falcon.HTTP_400
+
+    headers["Signature"] = 'signer="' + helping.signResource(bodyD, sk) + '"'
+
+    result = client.simulate_post('/signResource/', headers=headers, body=bodyD)
     assert result.content == b'{"message": "POST recieved"}'
     assert result.status == falcon.HTTP_202
 
     helping.cleanupBaseDir(dbing.gDbDirPath)
 
-    print("on_post() functioning properly")
+    print("signed on_post() functioning properly")
 
 
-
-def runResourceTests():
+def runSignTests():
     clientName = client()
     testOnGet(clientName)
     testPost(clientName)
 
     return True
 
-runResourceTests()
+runSignTests()
 
 
 

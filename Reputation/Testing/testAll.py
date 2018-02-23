@@ -6,3 +6,4 @@ import calcTests
 import helpTests
 import primeTests
 import resourceTests
+import signTests
