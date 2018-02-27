@@ -48,7 +48,13 @@ def reputationProcessReputation(self, **kwa):
                 if entry['repute']['rid'] not in ridList:   #Ignore reputes with duplicate rids
                     ridList.append(entry['repute']['rid'])
                     result = getAll(entry['reputee'], dbing.repGetEntries()) 
-                    if result != False:
+                    #try:
+                        #entryAvg = dbing.repGetTxn(entry['reputee'] + "-avg", dbName="reputation")
+
+                    if result != False: #and entryAvg != None:
+                        #newAvg = getAllRun(entry['reputee'], result, average=entryAvg)
+                        #repPutTxn(entry['reputee'] + "-avg", newAvg, dbName='reputation')
+                    #elif result != False:
                         #print("4")
                         ser = json.dumps({"reputee": entry['reputee'], "clout": {
                             "score": result[0],

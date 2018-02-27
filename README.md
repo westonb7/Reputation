@@ -81,7 +81,7 @@ Otherwise, the console should print an error message if there's something wrong.
 
 I'll be adding more testing scripts later.
 
-## Running the API
+## Usage
 
 This project can be run from the command line by navigating to the /Reputation/src/Reputation/ directory, and running the following command:
 

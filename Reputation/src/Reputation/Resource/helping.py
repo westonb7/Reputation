@@ -35,14 +35,22 @@ def getAll(reputee, entries):
     reachList = []
     clarityList = []
     #print(entries)
+    rAvg = 0
+    rTotal = 0
+    cAvg = 0
+    cTotal = 0
 
     for entry in entries:
         #print(entry)
         if entry['reputee'] == reputee:
             if entry['repute']['feature'] == "Reach":
                 reachList.append(entry['repute']['value'])
+                rAvg += entry['repute']['value']
+                rTotal += 1
             elif entry['repute']['feature'] == "Clarity":
                 clarityList.append(entry['repute']['value'])
+                cAvg += entry['repute']['value']
+                cTotal += 1
 
     if len(reachList) == 0 and len(clarityList) == 0:
         return False
@@ -54,7 +62,42 @@ def getAll(reputee, entries):
     cloutScore = findCloutScore(reachScore, reachConf, clarityScore, clarityConf)
     cloutConf = findCloutConfidence(reachConf, clarityConf)
 
-    allList = [cloutScore, cloutConf, reachScore, reachConf, clarityScore, clarityConf]
+    allList = [cloutScore, cloutConf, reachScore, reachConf, clarityScore, clarityConf, rAvg, rTotal, cAvg, cTotal]
+
+    #print("getAll() success!")
+    return allList
+
+def getAllRun(reputee, result, average=None):
+    #print(entries)
+    rAvg = result[6]
+    rTotal = result[7]
+    cAvg = result[8]
+    cTotal = result[9]
+
+    if average==None:
+        if entry['repute']['feature'] == "Reach":
+            reachList.append(entry['repute']['value'])
+        elif entry['repute']['feature'] == "Clarity":
+            clarityList.append(entry['repute']['value'])
+        return allList
+
+    if entry['reputee'] == reputee:
+        if entry['repute']['feature'] == "Reach":
+            reachList.append(entry['repute']['value'])
+        elif entry['repute']['feature'] == "Clarity":
+            clarityList.append(entry['repute']['value'])
+
+    if len(reachList) == 0 and len(clarityList) == 0:
+        return False
+
+    reachScore = runningScore(rAvg, rTotal)
+    reachConf = runningConf(rTotal, 0)
+    clarityScore = runningScore(cAvg, cTotal)
+    clarityConf = runningConf(cTotal, 1)
+    cloutScore = findCloutScore(reachScore, reachConf, clarityScore, clarityConf)
+    cloutConf = findCloutConfidence(reachConf, clarityConf)
+
+    allList = [rAvg, rTotal, cAvg, cTotal, clarityScore, clarityConf]
 
     #print("getAll() success!")
     return allList
