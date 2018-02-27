@@ -68,27 +68,19 @@ def getAll(reputee, entries):
     return allList
 
 def getAllRun(reputee, result, average=None):
-    #print(entries)
     rAvg = result[6]
     rTotal = result[7]
     cAvg = result[8]
     cTotal = result[9]
 
     if average==None:
-        if entry['repute']['feature'] == "Reach":
-            reachList.append(entry['repute']['value'])
-        elif entry['repute']['feature'] == "Clarity":
-            clarityList.append(entry['repute']['value'])
-        return allList
+        return result
 
-    if entry['reputee'] == reputee:
-        if entry['repute']['feature'] == "Reach":
-            reachList.append(entry['repute']['value'])
-        elif entry['repute']['feature'] == "Clarity":
-            clarityList.append(entry['repute']['value'])
-
-    if len(reachList) == 0 and len(clarityList) == 0:
-        return False
+    if average['reputee'] == reputee:
+        rAvg += average['reach']['average']
+        rTotal += average['reach']['total']
+        cAvg += average['clarity']['average']
+        cTotal += average['clarity']['total']
 
     reachScore = runningScore(rAvg, rTotal)
     reachConf = runningConf(rTotal, 0)
@@ -97,9 +89,9 @@ def getAllRun(reputee, result, average=None):
     cloutScore = findCloutScore(reachScore, reachConf, clarityScore, clarityConf)
     cloutConf = findCloutConfidence(reachConf, clarityConf)
 
-    allList = [rAvg, rTotal, cAvg, cTotal, clarityScore, clarityConf]
+    allList = [cloutScore, cloutConf, reachScore, reachConf, clarityScore, clarityConf, rAvg, rTotal, cAvg, cTotal]
 
-    #print("getAll() success!")
+    #print("getAllRun() success!")
     return allList
 
 def keyToKey64u(key):

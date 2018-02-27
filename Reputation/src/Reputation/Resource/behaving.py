@@ -48,14 +48,35 @@ def reputationProcessReputation(self, **kwa):
                 if entry['repute']['rid'] not in ridList:   #Ignore reputes with duplicate rids
                     ridList.append(entry['repute']['rid'])
                     result = getAll(entry['reputee'], dbing.repGetEntries()) 
-                    #try:
-                        #entryAvg = dbing.repGetTxn(entry['reputee'] + "-avg", dbName="reputation")
+                    """
+                    entryAvg = None
+                    try:
+                        entryAvg = dbing.repGetTxn(entry['reputee'], dbName="reputation")
 
-                    if result != False: #and entryAvg != None:
-                        #newAvg = getAllRun(entry['reputee'], result, average=entryAvg)
-                        #repPutTxn(entry['reputee'] + "-avg", newAvg, dbName='reputation')
+                    if result != False: and entryAvg != None:
+                        newAvg = getAllRun(entry['reputee'], result, average=entryAvg)
+                        ser = json.dumps({"reputee": entry['reputee'], "clout": {
+                            "score": newAvg[0],
+                            "confidence": newAvg[1]}, "reach": {
+                            "score": newAvg[2],
+                            "confidence": newAvg[3],
+                            "average": newAvg[6],
+                            "total": newAvg[7]}, "clarity": {
+                            "score": newAvg[4],
+                            "confidence": newAvg[5],
+                            "average": newAvg[8],
+                            "total": newAvg[9]}})
+                        try:
+                            success = dbing.repPutTxn(entry['reputee'], ser, dbName='reputation')
+                            except dbing.DatabaseError as exception:
+                            console.terse("Error processing reputation. {}".format(exception))
+                        if not success:
+                            console.terse("Error processing reputation.")
+                        
+                        """
                     #elif result != False:
                         #print("4")
+                    if result != False:  ##
                         ser = json.dumps({"reputee": entry['reputee'], "clout": {
                             "score": result[0],
                             "confidence": result[1]}, "reach": {
