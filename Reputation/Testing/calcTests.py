@@ -106,6 +106,17 @@ def findClConfTest():
 
     print("findCloutConfidence() functioning properly")
 
+def fuzzyTest():
+
+    assert cal.fuzzyAnd(0.4,0.3) == 0.3
+    assert cal.fuzzyAnd(0.4,0.7) == 0.4
+    assert cal.fuzzyOr(0.4,0.3) == 0.4
+    assert cal.fuzzyOr(0.4,0.7) == 0.7
+    assert cal.fuzzyNot(0.3) == 0.7
+    assert cal.fuzzyNot(0.5) == 0.5
+
+    print("Fuzzy And/Or/Not functioning properly")
+
 """
 def calScoresTest():
 
@@ -151,6 +162,7 @@ def runCalcTests():
     findConfTest()
     findClScoreTest()
     findClConfTest()
+    fuzzyTest()
     #calScoresTest()
 
 runCalcTests()

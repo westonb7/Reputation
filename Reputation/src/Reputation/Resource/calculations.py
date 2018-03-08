@@ -15,6 +15,15 @@ def sFunction(x, a, b):
         return 1
     return 0
 
+def fuzzyAnd(x, y):
+    return min(x,y)
+
+def fuzzyOr(x,y):
+    return max(x,y)
+
+def fuzzyNot(x):
+    return 1 - x
+
 ## Define a function to calculate score, can be used for either reach or clarity
 
 def findScore(scoreList):
