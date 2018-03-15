@@ -24,6 +24,13 @@ def fuzzyOr(x,y):
 def fuzzyNot(x):
     return 1 - x
 
+def compensatoryAnd(a, b, gamma=1):
+    if gamma == 1:
+        return a + b - a*b
+    elif gamma == 0:
+        return a*b
+    return 0
+
 ## Define a function to calculate score, can be used for either reach or clarity
 
 def findScore(scoreList):
